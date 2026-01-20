@@ -3,6 +3,217 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест по физкультуре</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Шапка -->
+        <header>
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-dumbbell"></i>
+                    <h1>Физкультура Тест</h1>
+                </div>
+                <div id="userInfo" class="user-info">
+                    <span id="userName">Гость</span>
+                    <div id="userAvatar" class="avatar">?</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Основной контент -->
+        <main>
+            <!-- Экран приветствия -->
+            <section id="welcomeScreen" class="screen active">
+                <div class="welcome-card">
+                    <h2>Тестирование по физкультуре</h2>
+                    <p class="subtitle">Проверьте свои знания. 10 случайных вопросов из 100.</p>
+                    
+                    <div class="stats">
+                        <div class="stat">
+                            <i class="fas fa-question-circle"></i>
+                            <h3>100 вопросов</h3>
+                            <p>База знаний</p>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-clock"></i>
+                            <h3>10 минут</h3>
+                            <p>На тест</p>
+                        </div>
+                        <div class="stat">
+                            <i class="fab fa-telegram"></i>
+                            <h3>Telegram</h3>
+                            <p>Результаты</p>
+                        </div>
+                    </div>
+                    
+                    <button id="startBtn" class="btn primary">
+                        <i class="fas fa-play"></i>
+                        Начать тест
+                    </button>
+                </div>
+            </section>
+
+            <!-- Экран регистрации -->
+            <section id="loginScreen" class="screen">
+                <div class="login-card">
+                    <h2>Вход в систему</h2>
+                    
+                    <div class="input-group">
+                        <label for="fullName">
+                            <i class="fas fa-user"></i>
+                            Фамилия и Имя
+                        </label>
+                        <input type="text" id="fullName" placeholder="Иванов Иван">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="className">
+                            <i class="fas fa-graduation-cap"></i>
+                            Класс
+                        </label>
+                        <select id="className">
+                            <option value="">Выберите класс</option>
+                            <option value="5">5 класс</option>
+                            <option value="6">6 класс</option>
+                            <option value="7">7 класс</option>
+                            <option value="8">8 класс</option>
+                            <option value="9">9 класс</option>
+                            <option value="10">10 класс</option>
+                            <option value="11">11 класс</option>
+                        </select>
+                    </div>
+                    
+                    <div class="telegram-notice">
+                        <i class="fab fa-telegram"></i>
+                        <p>Результаты будут отправлены учителю в Telegram</p>
+                    </div>
+                    
+                    <button id="loginBtn" class="btn primary">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Начать тест
+                    </button>
+                </div>
+            </section>
+
+            <!-- Экран тестирования -->
+            <section id="testScreen" class="screen">
+                <div class="test-header">
+                    <div class="test-info">
+                        <div class="info">
+                            <i class="fas fa-user"></i>
+                            <span id="currentUser"></span>
+                        </div>
+                        <div class="info">
+                            <i class="fas fa-question"></i>
+                            <span id="questionNum">Вопрос 1/10</span>
+                        </div>
+                        <div class="info">
+                            <i class="fas fa-clock"></i>
+                            <span id="timer">10:00</span>
+                        </div>
+                    </div>
+                    
+                    <div class="progress">
+                        <div class="progress-bar" id="progress"></div>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div id="questionText" class="question-text"></div>
+                    
+                    <div id="options" class="options">
+                        <!-- Варианты ответов будут здесь -->
+                    </div>
+                </div>
+                
+                <div class="navigation">
+                    <button id="prevBtn" class="btn">
+                        <i class="fas fa-arrow-left"></i>
+                        Назад
+                    </button>
+                    <button id="nextBtn" class="btn primary">
+                        Далее
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                    <button id="submitBtn" class="btn success">
+                        <i class="fas fa-paper-plane"></i>
+                        Завершить
+                    </button>
+                </div>
+            </section>
+
+            <!-- Экран результатов -->
+            <section id="resultsScreen" class="screen">
+                <div class="results-card">
+                    <h2>Результаты теста</h2>
+                    
+                    <div class="score-display">
+                        <div class="score-circle">
+                            <div id="scoreCircle" class="circle">
+                                <span id="scorePercent">0%</span>
+                            </div>
+                        </div>
+                        
+                        <div class="score-details">
+                            <h3 id="resultTitle">Отлично!</h3>
+                            <p id="resultDesc">Вы ответили на <span id="correctCount">0</span> из 10 вопросов</p>
+                        </div>
+                    </div>
+                    
+                    <div class="result-info">
+                        <div class="info-item">
+                            <i class="fas fa-user"></i>
+                            <div>
+                                <small>Ученик</small>
+                                <p id="resultName">-</p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-calendar"></i>
+                            <div>
+                                <small>Дата</small>
+                                <p id="resultDate">-</p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <i class="fab fa-telegram"></i>
+                            <div>
+                                <small>Статус</small>
+                                <p id="telegramStatus" class="status">Не отправлено</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="actions">
+                        <button id="retryBtn" class="btn primary">
+                            <i class="fas fa-redo"></i>
+                            Пройти еще раз
+                        </button>
+                        <button id="homeBtn" class="btn">
+                            <i class="fas fa-home"></i>
+                            На главную
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Футер -->
+        <footer>
+            <p>© 2023 Тестирование по физкультуре</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html><!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Физкультура - Тестирование</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -232,3 +443,4 @@
     <script src="script.js"></script>
 </body>
 </html>
+
