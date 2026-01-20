@@ -1,1036 +1,618 @@
-// Конфигурация приложения
+// Конфигурация
 const CONFIG = {
-    TOTAL_QUESTIONS: 10,
-    TIME_LIMIT: 600, // 10 минут в секундах
+    QUESTIONS_PER_TEST: 10,
+    TIME_LIMIT: 600,
     TELEGRAM_BOT_TOKEN: '7658490450:AAFrnv3U1uzswOOUdqMDIvDagbZCgCCuhPI',
-    TELEGRAM_CHAT_ID: '7658490450', // ID чата учителя
-    QUESTIONS_PER_TEST: 10
+    TELEGRAM_CHAT_ID: '7658490450'
 };
 
-// База из 100 вопросов по физкультуре
-const QUESTIONS_DATABASE = [
-    // 1. Общие вопросы (1-20)
+// Умные вопросы по физкультуре
+const QUESTIONS = [
+    // 1-25: Основы физкультуры
     {
-        question: "Что развивает регулярная физическая активность?",
-        options: ["Только мышцы", "Только сердце", "Все системы организма", "Только кости"],
-        correct: 2,
-        category: "Общие"
+        question: "Перед началом тренировки необходимо выполнять:",
+        options: ["Разминку", "Заминку", "Силовые упражнения", "Растяжку после тренировки"],
+        correct: 0,
+        explanation: "Разминка подготавливает организм к нагрузкам."
     },
     {
-        question: "Сколько раз в неделю рекомендуется заниматься физкультурой?",
-        options: ["1 раз", "2-3 раза", "3-5 раз", "Только на уроках"],
+        question: "Какой норматив сдают и мальчики, и девочки?",
+        options: ["Подтягивание", "Отжимание", "Челночный бег", "Прыжок в длину"],
         correct: 2,
-        category: "Здоровье"
+        explanation: "Челночный бег - общий норматив для всех."
+    },
+    {
+        question: "Что измеряют для контроля нагрузки?",
+        options: ["Вес", "Рост", "Пульс", "Давление"],
+        correct: 2,
+        explanation: "Пульс показывает интенсивность нагрузки."
+    },
+    {
+        question: "Как называется упражнение для развития гибкости?",
+        options: ["Приседание", "Наклон вперед", "Отжимание", "Прыжки"],
+        correct: 1,
+        explanation: "Наклоны развивают гибкость позвоночника."
+    },
+    {
+        question: "Сколько подходов обычно делают в силовой тренировке?",
+        options: ["1-2", "3-4", "5-6", "7-8"],
+        correct: 1,
+        explanation: "3-4 подхода оптимальны для развития силы."
+    },
+    {
+        question: "Что такое кардиотренировка?",
+        options: ["Силовая", "На выносливость", "На гибкость", "На координацию"],
+        correct: 1,
+        explanation: "Кардио развивает сердечно-сосудистую систему."
+    },
+    {
+        question: "Как часто нужно заниматься для поддержания формы?",
+        options: ["1 раз в неделю", "2-3 раза", "Ежедневно", "Раз в месяц"],
+        correct: 1,
+        explanation: "2-3 раза в неделю - оптимальный режим."
+    },
+    {
+        question: "Что развивает плавание?",
+        options: ["Только руки", "Только ноги", "Все мышцы", "Только спину"],
+        correct: 2,
+        explanation: "Плавание равномерно развивает все группы мышц."
+    },
+    {
+        question: "Какой витамин особенно важен для спортсменов?",
+        options: ["A", "B", "C", "D"],
+        correct: 3,
+        explanation: "Витамин D укрепляет кости и иммунитет."
     },
     {
         question: "Что такое разминка?",
-        options: ["Основная часть тренировки", "Подготовка организма к нагрузке", "Заминка после тренировки", "Силовая часть занятия"],
+        options: ["Основная часть", "Подготовка", "Завершение", "Отдых"],
         correct: 1,
-        category: "Теория"
+        explanation: "Разминка готовит организм к нагрузке."
     },
+    
+    // 26-50: Спортивные игры
     {
-        question: "Какой витамин вырабатывается на солнце и важен для костей?",
-        options: ["Витамин А", "Витамин С", "Витамин D", "Витамин B12"],
-        correct: 2,
-        category: "Здоровье"
-    },
-    {
-        question: "Что измеряет пульсометр?",
-        options: ["Артериальное давление", "Частоту сердечных сокращений", "Уровень кислорода в крови", "Температуру тела"],
-        correct: 1,
-        category: "Оборудование"
-    },
-    {
-        question: "Как называется передача мяча в волейболе?",
-        options: ["Пас", "Подача", "Атака", "Блок"],
+        question: "В баскетболе за штрафной бросок дают:",
+        options: ["1 очко", "2 очка", "3 очка", "4 очка"],
         correct: 0,
-        category: "Волейбол"
+        explanation: "Штрафной бросок = 1 очко."
     },
     {
-        question: "Сколько игроков в баскетбольной команде на площадке?",
-        options: ["5", "6", "7", "8"],
+        question: "В волейболе команда состоит из:",
+        options: ["5 игроков", "6 игроков", "7 игроков", "8 игроков"],
+        correct: 1,
+        explanation: "Волейбольная команда - 6 человек."
+    },
+    {
+        question: "В футболе матч длится:",
+        options: ["2 тайма по 45 мин", "3 периода по 20 мин", "4 тайма по 15 мин", "До 5 голов"],
         correct: 0,
-        category: "Баскетбол"
-    },
-    {
-        question: "Что такое осанка?",
-        options: ["Умение красиво ходить", "Правильное положение тела при сидении и стоянии", "Гибкость позвоночника", "Сила мышц спины"],
-        correct: 1,
-        category: "Здоровье"
-    },
-    {
-        question: "Какой вид спорта развивает все группы мышц?",
-        options: ["Шахматы", "Плавание", "Стрельба", "Гольф"],
-        correct: 1,
-        category: "Общие"
-    },
-    {
-        question: "Что такое ГТО?",
-        options: ["Спортивная игра", "Комплекс нормативов", "Вид спорта", "Спортивное общество"],
-        correct: 1,
-        category: "История"
-    },
-    {
-        question: "Как правильно дышать при беге?",
-        options: ["Только носом", "Только ртом", "Равномерно через нос и рот", "Задерживать дыхание"],
-        correct: 2,
-        category: "Техника"
-    },
-    {
-        question: "Что такое аэробика?",
-        options: ["Силовая тренировка", "Кардиотренировка с кислородом", "Стретчинг", "Йога"],
-        correct: 1,
-        category: "Виды спорта"
-    },
-    {
-        question: "Какой элемент бега является основным?",
-        options: ["Прыжок", "Толчок", "Приземление", "Отталкивание"],
-        correct: 3,
-        category: "Легкая атлетика"
-    },
-    {
-        question: "Что развивают упражнения на гибкость?",
-        options: ["Силу мышц", "Подвижность суставов", "Выносливость", "Координацию"],
-        correct: 1,
-        category: "Гибкость"
-    },
-    {
-        question: "Как называется начало бега в соревнованиях?",
-        options: ["Старт", "Финиш", "Разгон", "Спринт"],
-        correct: 0,
-        category: "Легкая атлетика"
-    },
-    {
-        question: "Что такое здоровый образ жизни?",
-        options: ["Только занятия спортом", "Отказ от вредных привычек", "Комплекс мер для укрепления здоровья", "Только правильное питание"],
-        correct: 2,
-        category: "Здоровье"
-    },
-    {
-        question: "Какой снаряд используется в художественной гимнастике?",
-        options: ["Гантели", "Лента", "Штанга", "Брусья"],
-        correct: 1,
-        category: "Гимнастика"
-    },
-    {
-        question: "Что такое пульс?",
-        options: ["Дыхание", "Сердцебиение", "Давление", "Температура"],
-        correct: 1,
-        category: "Анатомия"
-    },
-    {
-        question: "Как называется игра с мячом через сетку?",
-        options: ["Футбол", "Волейбол", "Баскетбол", "Гандбол"],
-        correct: 1,
-        category: "Волейбол"
-    },
-    {
-        question: "Что такое координация?",
-        options: ["Скорость движений", "Согласованность движений", "Сила мышц", "Выносливость"],
-        correct: 1,
-        category: "Физические качества"
-    },
-    // 2. Спортивные игры (21-40)
-    {
-        question: "Сколько таймов в футбольном матче?",
-        options: ["1", "2", "3", "4"],
-        correct: 1,
-        category: "Футбол"
-    },
-    {
-        question: "Как называется удар по мячу в футболе?",
-        options: ["Пас", "Удар", "Бросок", "Подача"],
-        correct: 1,
-        category: "Футбол"
+        explanation: "Футбольный матч: 2 тайма по 45 минут."
     },
     {
         question: "Что такое офсайд в футболе?",
-        options: ["Нарушение правил", "Положение вне игры", "Желтая карточка", "Удар от ворот"],
-        correct: 1,
-        category: "Футбол"
-    },
-    {
-        question: "Сколько очков дается за штрафной бросок в баскетболе?",
-        options: ["1", "2", "3", "4"],
+        options: ["Положение вне игры", "Удар от ворот", "Угловой", "Штрафной"],
         correct: 0,
-        category: "Баскетбол"
+        explanation: "Офсайд - положение вне игры."
     },
     {
-        question: "Что такое дриблинг?",
-        options: ["Передача мяча", "Ведение мяча", "Бросок по кольцу", "Защита"],
-        correct: 1,
-        category: "Баскетбол"
-    },
-    {
-        question: "Какой высоты волейбольная сетка для мужчин?",
-        options: ["2.24 м", "2.43 м", "2.60 м", "2.80 м"],
-        correct: 1,
-        category: "Волейбол"
-    },
-    {
-        question: "Что такое блок в волейболе?",
-        options: ["Подача", "Прием мяча", "Преграждение атаки", "Передача"],
-        correct: 2,
-        category: "Волейбол"
-    },
-    {
-        question: "Сколько игроков в гандбольной команде?",
-        options: ["5", "6", "7", "8"],
-        correct: 2,
-        category: "Гандбол"
-    },
-    {
-        question: "Как называется подача в теннисе?",
-        options: ["Серв", "Смаш", "Воллей", "Драйв"],
+        question: "В теннисе счет ведется:",
+        options: ["15, 30, 40", "1, 2, 3", "10, 20, 30", "A, B, C"],
         correct: 0,
-        category: "Теннис"
+        explanation: "Теннисный счет: 15, 30, 40, гейм."
     },
     {
         question: "Что такое эйс в теннисе?",
-        options: ["Подача навылет", "Ошибка", "Переигровка", "Сет"],
+        options: ["Подача на вылет", "Ошибка", "Сет", "Гейм"],
         correct: 0,
-        category: "Теннис"
+        explanation: "Эйс - подача, которую не коснулся соперник."
     },
     {
-        question: "Сколько фигур в шахматах?",
-        options: ["14", "16", "18", "20"],
-        correct: 1,
-        category: "Шахматы"
-    },
-    {
-        question: "Как называется ничья в шахматах?",
-        options: ["Мат", "Пат", "Шах", "Рокировка"],
-        correct: 1,
-        category: "Шахматы"
-    },
-    {
-        question: "Сколько кеглей в боулинге?",
-        options: ["8", "9", "10", "12"],
-        correct: 2,
-        category: "Боулинг"
-    },
-    {
-        question: "Как называется удар битой в бейсболе?",
-        options: ["Хоум-ран", "Страйк", "Бол", "Аут"],
+        question: "В бадминтоне играют:",
+        options: ["Ракеткой", "Битой", "Клюшкой", "Руками"],
         correct: 0,
-        category: "Бейсбол"
+        explanation: "В бадминтон играют ракетками."
     },
     {
-        question: "Что такое гольф-клуб?",
-        options: ["Мяч", "Лунка", "Клюшка", "Поле"],
-        correct: 2,
-        category: "Гольф"
-    },
-    {
-        question: "Какой цвет олимпийских колец символизирует Европу?",
-        options: ["Синий", "Желтый", "Черный", "Зеленый"],
+        question: "Что такое гейм в теннисе?",
+        options: ["Партия", "Подача", "Очко", "Турнир"],
         correct: 0,
-        category: "Олимпиада"
+        explanation: "Гейм - часть сета в теннисе."
     },
     {
-        question: "Что такое заминка после тренировки?",
-        options: ["Разминка", "Упражнения для восстановления", "Силовая часть", "Основная часть"],
-        correct: 1,
-        category: "Теория"
-    },
-    {
-        question: "Как называется вид спорта на льду с клюшкой?",
-        options: ["Керлинг", "Хоккей", "Фигурное катание", "Биатлон"],
-        correct: 1,
-        category: "Зимние виды"
-    },
-    {
-        question: "Что измеряется в метрах и сантиметрах в легкой атлетике?",
-        options: ["Время", "Длина прыжка", "Вес", "Сила"],
-        correct: 1,
-        category: "Легкая атлетика"
-    },
-    {
-        question: "Какой витамин содержится в цитрусовых и важен для иммунитета?",
-        options: ["Витамин А", "Витамин С", "Витамин D", "Витамин K"],
-        correct: 1,
-        category: "Питание"
-    },
-    // 3. Легкая атлетика (41-60)
-    {
-        question: "Как называется бег на короткую дистанцию?",
-        options: ["Марафон", "Спринт", "Стайерский", "Кросс"],
-        correct: 1,
-        category: "Легкая атлетика"
-    },
-    {
-        question: "Какая дистанция в марафоне?",
-        options: ["10 км", "21.1 км", "42.195 км", "50 км"],
+        question: "В настольном теннисе мяч:",
+        options: ["Пластиковый", "Резиновый", "Целлулоидный", "Тканевый"],
         correct: 2,
-        category: "Легкая атлетика"
+        explanation: "Используется целлулоидный мяч."
+    },
+    {
+        question: "Что такое сет в волейболе?",
+        options: ["Партия", "Подача", "Блок", "Пасс"],
+        correct: 0,
+        explanation: "Сет - партия в волейболе."
+    },
+    
+    // 51-75: Легкая атлетика
+    {
+        question: "Бег на 100 метров называется:",
+        options: ["Спринт", "Стайерский", "Марафон", "Кросс"],
+        correct: 0,
+        explanation: "Спринт - бег на короткие дистанции."
+    },
+    {
+        question: "Марафонская дистанция:",
+        options: ["10 км", "21,1 км", "42,195 км", "50 км"],
+        correct: 2,
+        explanation: "Марафон = 42 км 195 м."
     },
     {
         question: "Что такое эстафета?",
-        options: ["Бег с препятствиями", "Командный бег с передачей палочки", "Бег на выносливость", "Скоростной бег"],
-        correct: 1,
-        category: "Легкая атлетика"
+        options: ["Командный бег", "Бег с барьерами", "Бег в гору", "Бег по стадиону"],
+        correct: 0,
+        explanation: "Эстафета - командный бег с передачей палочки."
     },
     {
-        question: "Как называется прыжок с шестом?",
-        options: ["Прыжок в высоту", "Прыжок в длину", "Прыжок с шестом", "Тройной прыжок"],
-        correct: 2,
-        category: "Легкая атлетика"
+        question: "Прыжок в длину выполняется:",
+        options: ["С разбега", "С места", "С трамплина", "С шестом"],
+        correct: 0,
+        explanation: "Прыжок в длину выполняется с разбега."
     },
     {
         question: "Что такое тройной прыжок?",
-        options: ["Три прыжка подряд", "Прыжок с трех шагов", "Скачок, шаг и прыжок", "Прыжок через три препятствия"],
-        correct: 2,
-        category: "Легкая атлетика"
-    },
-    {
-        question: "Как называется метание диска?",
-        options: ["Толкание ядра", "Метание копья", "Метание диска", "Метание молота"],
-        correct: 2,
-        category: "Легкая атлетика"
-    },
-    {
-        question: "Что такое барьерный бег?",
-        options: ["Бег с препятствиями", "Бег по пересеченной местности", "Бег в гору", "Бег с ускорением"],
+        options: ["Скачок, шаг, прыжок", "Три прыжка", "Прыжок с шестом", "Прыжок в высоту"],
         correct: 0,
-        category: "Легкая атлетика"
+        explanation: "Тройной прыжок: скачок, шаг, прыжок."
     },
     {
-        question: "Сколько этапов в десятиборье?",
-        options: ["8", "10", "12", "15"],
+        question: "Метание диска происходит:",
+        options: ["Из круга", "С разбега", "С места", "С поворотом"],
+        correct: 0,
+        explanation: "Метание диска выполняется из круга."
+    },
+    {
+        question: "Бег с препятствиями называется:",
+        options: ["Барьерный", "Стипль-чез", "Кросс", "Спринт"],
         correct: 1,
-        category: "Легкая атлетика"
+        explanation: "Стипль-чез - бег с препятствиями."
     },
     {
-        question: "Что такое кросс?",
-        options: ["Бег по стадиону", "Бег по пересеченной местности", "Бег на короткую дистанцию", "Эстафетный бег"],
-        correct: 1,
-        category: "Легкая атлетика"
+        question: "Что такое десятиборье?",
+        options: ["10 видов", "10 км", "10 попыток", "10 спортсменов"],
+        correct: 0,
+        explanation: "Десятиборье - 10 видов легкой атлетики."
     },
     {
-        question: "Как называется старт из низкого положения?",
-        options: ["Высокий старт", "Низкий старт", "Старт с ходу", "Старт с места"],
-        correct: 1,
-        category: "Легкая атлетика"
+        question: "Бег по пересеченной местности:",
+        options: ["Кросс", "Спринт", "Марафон", "Эстафета"],
+        correct: 0,
+        explanation: "Кросс - бег по пересеченной местности."
     },
     {
-        question: "Какой орган качает кровь по телу?",
-        options: ["Легкие", "Печень", "Сердце", "Почки"],
-        correct: 2,
-        category: "Анатомия"
+        question: "Старт из низкого положения используется в:",
+        options: ["Спринте", "Марафоне", "Кроссе", "Ходьбе"],
+        correct: 0,
+        explanation: "Низкий старт - в спринтерском беге."
     },
-    {
-        question: "Что такое гиподинамия?",
-        options: ["Повышенная активность", "Недостаток движения", "Избыточный вес", "Нарушение осанки"],
-        correct: 1,
-        category: "Здоровье"
-    },
-    {
-        question: "Какой пульс считается нормальным в покое у взрослого?",
-        options: ["40-60 ударов", "60-80 ударов", "80-100 ударов", "100-120 ударов"],
-        correct: 1,
-        category: "Анатомия"
-    },
-    {
-        question: "Что такое разносторонняя физическая подготовка?",
-        options: ["Тренировка одной группы мышц", "Развитие всех физических качеств", "Только кардиотренировки", "Только силовые тренировки"],
-        correct: 1,
-        category: "Теория"
-    },
-    {
-        question: "Какой минерал важен для крепости костей?",
-        options: ["Железо", "Кальций", "Цинк", "Йод"],
-        correct: 1,
-        category: "Питание"
-    },
-    {
-        question: "Что такое вестибулярный аппарат?",
-        options: ["Орган слуха", "Орган равновесия", "Орган зрения", "Орган обоняния"],
-        correct: 1,
-        category: "Анатомия"
-    },
-    {
-        question: "Сколько литров воды нужно пить в день?",
-        options: ["0.5-1 литр", "1-1.5 литра", "1.5-2 литра", "2-2.5 литра"],
-        correct: 2,
-        category: "Здоровье"
-    },
-    {
-        question: "Что такое метаболизм?",
-        options: ["Дыхание", "Обмен веществ", "Кровообращение", "Пищеварение"],
-        correct: 1,
-        category: "Анатомия"
-    },
-    {
-        question: "Какая температура тела считается нормальной?",
-        options: ["35.5-36.5°C", "36.6-37.0°C", "37.1-37.5°C", "37.6-38.0°C"],
-        correct: 1,
-        category: "Здоровье"
-    },
-    {
-        question: "Что такое сердечно-сосудистая система?",
-        options: ["Система дыхания", "Система кровообращения", "Пищеварительная система", "Нервная система"],
-        correct: 1,
-        category: "Анатомия"
-    },
-    // 4. Гимнастика и зимние виды (61-80)
+    
+    // 76-100: Гимнастика и здоровье
     {
         question: "Что такое кувырок?",
-        options: ["Прыжок", "Переворот через голову", "Стойка на руках", "Мост"],
-        correct: 1,
-        category: "Гимнастика"
-    },
-    {
-        question: "Как называется упражнение на брусьях?",
-        options: ["Подъем", "Отжимание", "Переворот", "Стойка"],
-        correct: 1,
-        category: "Гимнастика"
-    },
-    {
-        question: "Что такое мостик?",
-        options: ["Прогиб назад", "Наклон вперед", "Поворот", "Прыжок"],
+        options: ["Переворот через голову", "Прыжок", "Стойка", "Мост"],
         correct: 0,
-        category: "Гимнастика"
+        explanation: "Кувырок - переворот через голову."
     },
     {
-        question: "Как называется снаряд для упражнений у женщин?",
-        options: ["Бревно", "Брусья", "Кольца", "Конь"],
+        question: "Упражнение 'мостик' развивает:",
+        options: ["Гибкость", "Силу", "Выносливость", "Скорость"],
         correct: 0,
-        category: "Гимнастика"
-    },
-    {
-        question: "Что такое колесо в гимнастике?",
-        options: ["Кувырок", "Переворот в сторону", "Сальто", "Перекладина"],
-        correct: 1,
-        category: "Гимнастика"
-    },
-    {
-        question: "Сколько видов в спортивной гимнастике у мужчин?",
-        options: ["4", "6", "8", "10"],
-        correct: 1,
-        category: "Гимнастика"
-    },
-    {
-        question: "Что такое вольные упражнения?",
-        options: ["Упражнения на ковре", "Упражнения на снарядах", "Акробатика", "Хореография"],
-        correct: 0,
-        category: "Гимнастика"
-    },
-    {
-        question: "Как называется снаряд для прыжков?",
-        options: ["Козел", "Конь", "Мост", "Бревно"],
-        correct: 0,
-        category: "Гимнастика"
+        explanation: "Мостик развивает гибкость спины."
     },
     {
         question: "Что такое шпагат?",
-        options: ["Наклон", "Мост", "Растяжка ног в разные стороны", "Кувырок"],
-        correct: 2,
-        category: "Гимнастика"
-    },
-    {
-        question: "Как называется стойка на руках?",
-        options: ["Мост", "Колесо", "Стойка на руках", "Кувырок"],
-        correct: 2,
-        category: "Гимнастика"
-    },
-    {
-        question: "Как называется спуск на лыжах с горы?",
-        options: ["Бег", "Слалом", "Горные лыжи", "Биатлон"],
-        correct: 2,
-        category: "Зимние виды"
-    },
-    {
-        question: "Что такое слалом?",
-        options: ["Прямой спуск", "Спуск через ворота", "Прыжок с трамплина", "Бег на лыжах"],
-        correct: 1,
-        category: "Зимние виды"
-    },
-    {
-        question: "Сколько дистанций в биатлоне?",
-        options: ["2", "4", "6", "8"],
-        correct: 1,
-        category: "Зимние виды"
-    },
-    {
-        question: "Как называется прыжок с трамплина?",
-        options: ["Прыжки на лыжах", "Ски-джемпинг", "Фристайл", "Сноуборд"],
-        correct: 1,
-        category: "Зимние виды"
-    },
-    {
-        question: "Что такое керлинг?",
-        options: ["Игра с камнями на льду", "Бег на коньках", "Хоккей", "Фигурное катание"],
+        options: ["Растяжка ног", "Наклон", "Кувырок", "Стойка"],
         correct: 0,
-        category: "Зимние виды"
+        explanation: "Шпагат - максимальная растяжка ног."
     },
     {
-        question: "Сколько фигур в фигурном катании?",
-        options: ["4", "6", "8", "10"],
-        correct: 1,
-        category: "Зимние виды"
-    },
-    {
-        question: "Что такое шорт-трек?",
-        options: ["Бег на короткой дорожке", "Прыжки", "Танцы на льду", "Хоккей"],
+        question: "Стойка на лопатках называется:",
+        options: ["Березка", "Мостик", "Колесо", "Кувырок"],
         correct: 0,
-        category: "Зимние виды"
+        explanation: "'Березка' - стойка на лопатках."
     },
     {
-        question: "Как называется санный спорт?",
-        options: ["Бобслей", "Скелетон", "Люж", "Санки"],
-        correct: 2,
-        category: "Зимние виды"
-    },
-    {
-        question: "Что такое бобслей?",
-        options: ["Одиночные сани", "Двойные сани", "Спуск на санях-бобах", "Прыжки на лыжах"],
-        correct: 2,
-        category: "Зимние виды"
-    },
-    {
-        question: "Как называется горнолыжный поворот?",
-        options: ["Клин", "Карвинг", "Слалом", "Фристайл"],
-        correct: 1,
-        category: "Зимние виды"
-    },
-    // 5. История и теория (81-100)
-    {
-        question: "В каком году прошли первые Олимпийские игры?",
-        options: ["776 г. до н.э.", "1896 г.", "1924 г.", "1952 г."],
+        question: "Что развивают упражнения на брусьях?",
+        options: ["Руки и грудь", "Ноги", "Спину", "Пресс"],
         correct: 0,
-        category: "История"
+        explanation: "Брусья развивают руки и грудные мышцы."
     },
     {
-        question: "Что означает олимпийский девиз?",
-        options: ["Быстрее, выше, сильнее", "Главное не победа, а участие", "Мир во всем мире", "Спорт для всех"],
+        question: "На перекладине выполняют:",
+        options: ["Подтягивания", "Отжимания", "Приседания", "Прыжки"],
         correct: 0,
-        category: "Олимпиада"
+        explanation: "На перекладине делают подтягивания."
     },
     {
-        question: "Кто основатель современных Олимпийских игр?",
-        options: ["Хуан Антонио Самаранч", "Пьер де Кубертен", "Алексис Видаль", "Томас Бах"],
-        correct: 1,
-        category: "История"
-    },
-    {
-        question: "Какой город принимал Олимпиаду 1980 года?",
-        options: ["Москва", "Ленинград", "Киев", "Минск"],
+        question: "Что такое вестибулярный аппарат?",
+        options: ["Орган равновесия", "Орган слуха", "Орган зрения", "Орган обоняния"],
         correct: 0,
-        category: "История"
+        explanation: "Отвечает за равновесие и координацию."
     },
     {
-        question: "Что такое паралимпийские игры?",
-        options: ["Игры для профессионалов", "Игры для любителей", "Игры для спортсменов с инвалидностью", "Зимние игры"],
-        correct: 2,
-        category: "Олимпиада"
-    },
-    {
-        question: "Как называется наука о физическом воспитании?",
-        options: ["Биология", "Физиология", "Педагогика", "Теория физической культуры"],
-        correct: 3,
-        category: "Теория"
-    },
-    {
-        question: "Что такое физическое качество?",
-        options: ["Внешний вид", "Способность выполнять движения", "Телосложение", "Спортивный разряд"],
-        correct: 1,
-        category: "Теория"
-    },
-    {
-        question: "Как называется план тренировок?",
-        options: ["График", "Программа", "Расписание", "Цикл"],
-        correct: 1,
-        category: "Теория"
-    },
-    {
-        question: "Что такое спортивная дисциплина?",
-        options: ["Вид спорта", "Раздел вида спорта", "Правила", "Соревнования"],
-        correct: 1,
-        category: "Теория"
-    },
-    {
-        question: "Как называется нарушение правил в спорте?",
-        options: ["Фол", "Офсайд", "Аут", "Страйк"],
+        question: "Нормальный пульс в покое:",
+        options: ["60-80", "80-100", "100-120", "120-140"],
         correct: 0,
-        category: "Теория"
+        explanation: "60-80 ударов в минуту - норма."
     },
     {
-        question: "Что такое допинг?",
-        options: ["Лекарство", "Запрещенные вещества", "Витамины", "Спортивное питание"],
-        correct: 1,
-        category: "Теория"
-    },
-    {
-        question: "Как называется судья в боксе?",
-        options: ["Арбитр", "Рефери", "Судья", "Инспектор"],
-        correct: 1,
-        category: "Бокс"
-    },
-    {
-        question: "Что такое любительский спорт?",
-        options: ["Спорт для заработка", "Спорт без оплаты", "Профессиональный спорт", "Школьный спорт"],
-        correct: 1,
-        category: "Теория"
-    },
-    {
-        question: "Как называется спортивное звание?",
-        options: ["Разряд", "Звание мастера спорта", "Категория", "Квалификация"],
-        correct: 1,
-        category: "Теория"
-    },
-    {
-        question: "Что такое спортивный разряд?",
-        options: ["Награда", "Уровень подготовки", "Должность", "Звание"],
-        correct: 1,
-        category: "Теория"
-    },
-    {
-        question: "Какой гормон вырабатывается при физических нагрузках?",
-        options: ["Инсулин", "Адреналин", "Эндорфин", "Мелатонин"],
-        correct: 2,
-        category: "Анатомия"
-    },
-    {
-        question: "Что такое сустав?",
-        options: ["Кость", "Соединение костей", "Мышца", "Связка"],
-        correct: 1,
-        category: "Анатомия"
-    },
-    {
-        question: "Как называется наука о здоровье?",
-        options: ["Биология", "Гигиена", "Анатомия", "Физиология"],
-        correct: 1,
-        category: "Теория"
-    },
-    {
-        question: "Что такое иммунитет?",
-        options: ["Выносливость", "Защита организма", "Сила мышц", "Гибкость"],
-        correct: 1,
-        category: "Здоровье"
-    },
-    {
-        question: "Какой витамин важен для зрения?",
-        options: ["Витамин А", "Витамин В", "Витамин С", "Витамин D"],
+        question: "Что такое осанка?",
+        options: ["Положение тела", "Походка", "Движение", "Поза"],
         correct: 0,
-        category: "Питание"
+        explanation: "Осанка - привычное положение тела."
+    },
+    {
+        question: "Для укрепления костей нужен:",
+        options: ["Кальций", "Железо", "Йод", "Цинк"],
+        correct: 0,
+        explanation: "Кальций делает кости крепкими."
     }
 ];
 
 // Состояние приложения
-let appState = {
+let state = {
     user: null,
     currentQuestion: 0,
-    userAnswers: [],
-    testQuestions: [],
-    startTime: null,
-    timerInterval: null,
-    timeLeft: CONFIG.TIME_LIMIT
+    answers: [],
+    questions: [],
+    timeLeft: CONFIG.TIME_LIMIT,
+    timer: null,
+    testStartTime: null
 };
 
 // DOM элементы
 const elements = {
-    welcomeSection: document.getElementById('welcomeSection'),
-    testSection: document.getElementById('testSection'),
-    resultsSection: document.getElementById('resultsSection'),
-    loginBtn: document.getElementById('loginBtn'),
-    startTestBtn: document.getElementById('startTestBtn'),
-    prevQuestionBtn: document.getElementById('prevQuestionBtn'),
-    nextQuestionBtn: document.getElementById('nextQuestionBtn'),
-    submitTestBtn: document.getElementById('submitTestBtn'),
-    restartTestBtn: document.getElementById('restartTestBtn'),
-    backToHomeBtn: document.getElementById('backToHomeBtn'),
-    submitLoginBtn: document.getElementById('submitLoginBtn'),
-    loginModal: document.getElementById('loginModal'),
-    closeModal: document.getElementById('closeModal'),
-    fullNameInput: document.getElementById('fullName'),
-    classNameSelect: document.getElementById('className'),
+    screens: {
+        welcome: document.getElementById('welcomeScreen'),
+        login: document.getElementById('loginScreen'),
+        test: document.getElementById('testScreen'),
+        results: document.getElementById('resultsScreen')
+    },
+    userInfo: document.getElementById('userInfo'),
+    userName: document.getElementById('userName'),
     userAvatar: document.getElementById('userAvatar'),
-    userNameDisplay: document.getElementById('userNameDisplay'),
-    questionCounter: document.getElementById('questionCounter'),
+    startBtn: document.getElementById('startBtn'),
+    loginBtn: document.getElementById('loginBtn'),
+    fullName: document.getElementById('fullName'),
+    className: document.getElementById('className'),
+    currentUser: document.getElementById('currentUser'),
+    questionNum: document.getElementById('questionNum'),
     timer: document.getElementById('timer'),
-    progressBar: document.getElementById('progressBar'),
-    questionContainer: document.getElementById('questionContainer'),
-    scoreValue: document.getElementById('scoreValue'),
+    progress: document.getElementById('progress'),
+    questionText: document.getElementById('questionText'),
+    options: document.getElementById('options'),
+    prevBtn: document.getElementById('prevBtn'),
+    nextBtn: document.getElementById('nextBtn'),
+    submitBtn: document.getElementById('submitBtn'),
+    scorePercent: document.getElementById('scorePercent'),
+    correctCount: document.getElementById('correctCount'),
     resultTitle: document.getElementById('resultTitle'),
-    resultDescription: document.getElementById('resultDescription'),
-    correctAnswers: document.getElementById('correctAnswers'),
-    studentNameResult: document.getElementById('studentNameResult'),
-    testDate: document.getElementById('testDate'),
-    telegramStatus: document.getElementById('telegramStatus')
+    resultDesc: document.getElementById('resultDesc'),
+    resultName: document.getElementById('resultName'),
+    resultDate: document.getElementById('resultDate'),
+    telegramStatus: document.getElementById('telegramStatus'),
+    retryBtn: document.getElementById('retryBtn'),
+    homeBtn: document.getElementById('homeBtn')
 };
 
-// Инициализация приложения
+// Инициализация
 function init() {
-    setupEventListeners();
-    updateUI();
-}
-
-// Настройка обработчиков событий
-function setupEventListeners() {
-    elements.startTestBtn.addEventListener('click', () => {
-        if (appState.user) {
-            startTest();
-        } else {
-            showLoginModal();
-        }
-    });
-    
-    elements.loginBtn.addEventListener('click', () => {
-        if (appState.user) {
-            logout();
-        } else {
-            showLoginModal();
-        }
-    });
-    
-    elements.closeModal.addEventListener('click', hideLoginModal);
-    elements.submitLoginBtn.addEventListener('click', handleLogin);
-    
-    elements.prevQuestionBtn.addEventListener('click', showPreviousQuestion);
-    elements.nextQuestionBtn.addEventListener('click', showNextQuestion);
-    elements.submitTestBtn.addEventListener('click', submitTest);
-    
-    elements.restartTestBtn.addEventListener('click', restartTest);
-    elements.backToHomeBtn.addEventListener('click', goToHome);
-    
-    window.addEventListener('click', (event) => {
-        if (event.target === elements.loginModal) {
-            hideLoginModal();
-        }
-    });
-    
-    elements.fullNameInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') handleLogin();
-    });
-}
-
-// Обновление интерфейса
-function updateUI() {
-    if (appState.user) {
-        elements.loginBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Выйти';
-        elements.userNameDisplay.textContent = appState.user.name;
-        elements.studentNameResult.textContent = appState.user.name;
-    } else {
-        elements.loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Войти';
-        elements.userNameDisplay.textContent = 'Ученик';
+    // Восстановление пользователя
+    const savedUser = localStorage.getItem('fizraUser');
+    if (savedUser) {
+        state.user = JSON.parse(savedUser);
+        updateUserInfo();
     }
+    
+    // Обработчики событий
+    elements.startBtn.addEventListener('click', showLoginScreen);
+    elements.loginBtn.addEventListener('click', handleLogin);
+    elements.prevBtn.addEventListener('click', prevQuestion);
+    elements.nextBtn.addEventListener('click', nextQuestion);
+    elements.submitBtn.addEventListener('click', submitTest);
+    elements.retryBtn.addEventListener('click', restartTest);
+    elements.homeBtn.addEventListener('click', goHome);
+    
+    // Навигация клавишами
+    document.addEventListener('keydown', handleKeyPress);
+    
+    showScreen('welcome');
 }
 
-// Обновление аватара
-function updateAvatar() {
-    if (appState.user) {
-        const initials = appState.user.name
-            .split(' ')
-            .map(word => word[0])
-            .join('')
-            .toUpperCase();
-        elements.userAvatar.textContent = initials;
-    } else {
-        elements.userAvatar.textContent = '?';
-    }
+// Показать экран
+function showScreen(screenName) {
+    Object.values(elements.screens).forEach(screen => {
+        screen.classList.remove('active');
+    });
+    elements.screens[screenName].classList.add('active');
 }
 
-// Показать модальное окно входа
-function showLoginModal() {
-    elements.loginModal.style.display = 'flex';
-    elements.fullNameInput.focus();
-}
-
-// Скрыть модальное окно входа
-function hideLoginModal() {
-    elements.loginModal.style.display = 'none';
-    elements.fullNameInput.value = '';
-    elements.classNameSelect.value = '';
+// Показать экран входа
+function showLoginScreen() {
+    showScreen('login');
+    elements.fullName.focus();
 }
 
 // Обработка входа
 function handleLogin() {
-    const fullName = elements.fullNameInput.value.trim();
-    const className = elements.classNameSelect.value;
+    const name = elements.fullName.value.trim();
+    const className = elements.className.value;
     
-    if (!fullName) {
-        alert('Пожалуйста, введите ваше имя и фамилию');
-        elements.fullNameInput.focus();
+    if (!name) {
+        alert('Введите фамилию и имя');
         return;
     }
     
     if (!className) {
-        alert('Пожалуйста, выберите ваш класс');
-        elements.classNameSelect.focus();
+        alert('Выберите класс');
         return;
     }
     
-    appState.user = {
-        name: fullName,
+    state.user = {
+        name: name,
         class: className,
-        id: Date.now().toString()
+        initials: name.split(' ').map(n => n[0]).join('').toUpperCase()
     };
     
-    updateUI();
-    updateAvatar();
-    hideLoginModal();
+    localStorage.setItem('fizraUser', JSON.stringify(state.user));
+    updateUserInfo();
     startTest();
 }
 
-// Выход из системы
-function logout() {
-    if (confirm('Вы уверены, что хотите выйти?')) {
-        appState.user = null;
-        updateUI();
-        updateAvatar();
-        goToHome();
+// Обновить информацию о пользователе
+function updateUserInfo() {
+    if (state.user) {
+        elements.userName.textContent = state.user.name;
+        elements.userAvatar.textContent = state.user.initials;
+        elements.currentUser.textContent = `${state.user.name} (${state.user.class} класс)`;
+        elements.resultName.textContent = `${state.user.name}, ${state.user.class} класс`;
     }
 }
 
 // Начать тест
 function startTest() {
-    appState.testQuestions = getRandomQuestions(CONFIG.QUESTIONS_PER_TEST);
-    appState.currentQuestion = 0;
-    appState.userAnswers = new Array(CONFIG.QUESTIONS_PER_TEST).fill(null);
-    appState.timeLeft = CONFIG.TIME_LIMIT;
+    state.currentQuestion = 0;
+    state.answers = [];
+    state.questions = getRandomQuestions();
+    state.timeLeft = CONFIG.TIME_LIMIT;
+    state.testStartTime = new Date();
     
+    // Перемешать варианты ответов
+    state.questions.forEach(q => {
+        const correct = q.options[q.correct];
+        const shuffled = [...q.options].sort(() => Math.random() - 0.5);
+        q.correct = shuffled.indexOf(correct);
+        q.options = shuffled;
+    });
+    
+    showScreen('test');
     startTimer();
-    
-    elements.welcomeSection.style.display = 'none';
-    elements.resultsSection.style.display = 'none';
-    elements.testSection.style.display = 'block';
-    
-    displayCurrentQuestion();
+    showQuestion();
 }
 
 // Получить случайные вопросы
-function getRandomQuestions(count) {
-    const shuffled = [...QUESTIONS_DATABASE];
-    
-    for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    
-    const selected = shuffled.slice(0, count);
-    
-    selected.forEach(question => {
-        const originalCorrect = question.options[question.correct];
-        const shuffledOptions = [...question.options];
-        
-        for (let i = shuffledOptions.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [shuffledOptions[i], shuffledOptions[j]] = [shuffledOptions[j], shuffledOptions[i]];
-        }
-        
-        question.correct = shuffledOptions.indexOf(originalCorrect);
-        question.options = shuffledOptions;
-    });
-    
-    return selected;
+function getRandomQuestions() {
+    const shuffled = [...QUESTIONS].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, CONFIG.QUESTIONS_PER_TEST);
 }
 
 // Запустить таймер
 function startTimer() {
-    appState.startTime = Date.now();
+    clearInterval(state.timer);
+    updateTimerDisplay();
     
-    if (appState.timerInterval) {
-        clearInterval(appState.timerInterval);
-    }
-    
-    appState.timerInterval = setInterval(updateTimer, 1000);
-    updateTimer();
+    state.timer = setInterval(() => {
+        state.timeLeft--;
+        updateTimerDisplay();
+        
+        if (state.timeLeft <= 0) {
+            clearInterval(state.timer);
+            submitTest();
+        }
+    }, 1000);
 }
 
-// Обновить таймер
-function updateTimer() {
-    appState.timeLeft--;
-    
-    if (appState.timeLeft <= 0) {
-        clearInterval(appState.timerInterval);
-        submitTest();
-        return;
-    }
-    
-    const minutes = Math.floor(appState.timeLeft / 60);
-    const seconds = appState.timeLeft % 60;
+// Обновить отображение таймера
+function updateTimerDisplay() {
+    const minutes = Math.floor(state.timeLeft / 60);
+    const seconds = state.timeLeft % 60;
     elements.timer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
 
-// Отобразить текущий вопрос
-function displayCurrentQuestion() {
-    const question = appState.testQuestions[appState.currentQuestion];
+// Показать вопрос
+function showQuestion() {
+    const question = state.questions[state.currentQuestion];
     
-    elements.questionCounter.textContent = `Вопрос ${appState.currentQuestion + 1}/${CONFIG.QUESTIONS_PER_TEST}`;
+    // Обновить номер вопроса
+    elements.questionNum.textContent = `Вопрос ${state.currentQuestion + 1}/${CONFIG.QUESTIONS_PER_TEST}`;
     
-    const progress = ((appState.currentQuestion + 1) / CONFIG.QUESTIONS_PER_TEST) * 100;
-    elements.progressBar.style.width = `${progress}%`;
+    // Обновить прогресс
+    const progress = ((state.currentQuestion + 1) / CONFIG.QUESTIONS_PER_TEST) * 100;
+    elements.progress.style.width = `${progress}%`;
     
-    const optionsHTML = question.options.map((option, index) => {
-        const isSelected = appState.userAnswers[appState.currentQuestion] === index;
-        const letter = String.fromCharCode(65 + index);
+    // Отобразить вопрос
+    elements.questionText.textContent = question.question;
+    
+    // Очистить варианты ответов
+    elements.options.innerHTML = '';
+    
+    // Добавить варианты ответов
+    question.options.forEach((option, index) => {
+        const optionElement = document.createElement('div');
+        optionElement.className = 'option';
+        if (state.answers[state.currentQuestion] === index) {
+            optionElement.classList.add('selected');
+        }
         
-        return `
-            <div class="option ${isSelected ? 'selected' : ''}" data-index="${index}">
-                <div class="option-letter">${letter}</div>
-                <div class="option-text">${option}</div>
-            </div>
+        optionElement.innerHTML = `
+            <div class="option-letter">${String.fromCharCode(65 + index)}</div>
+            <div class="option-text">${option}</div>
         `;
-    }).join('');
-    
-    elements.questionContainer.innerHTML = `
-        <div class="question-header">
-            <div class="question-number">Вопрос ${appState.currentQuestion + 1}</div>
-            <div class="question-text">${question.question}</div>
-        </div>
-        <div class="options-container">
-            ${optionsHTML}
-        </div>
-    `;
-    
-    document.querySelectorAll('.option').forEach(option => {
-        option.addEventListener('click', () => {
-            const selectedIndex = parseInt(option.dataset.index);
-            appState.userAnswers[appState.currentQuestion] = selectedIndex;
-            
-            document.querySelectorAll('.option').forEach(opt => {
-                opt.classList.remove('selected');
-            });
-            
-            option.classList.add('selected');
-            updateNavigationButtons();
-        });
+        
+        optionElement.addEventListener('click', () => selectAnswer(index));
+        elements.options.appendChild(optionElement);
     });
     
-    updateNavigationButtons();
+    // Обновить кнопки навигации
+    elements.prevBtn.style.display = state.currentQuestion > 0 ? 'flex' : 'none';
+    elements.nextBtn.style.display = state.currentQuestion < CONFIG.QUESTIONS_PER_TEST - 1 ? 'flex' : 'none';
+    elements.submitBtn.style.display = state.currentQuestion === CONFIG.QUESTIONS_PER_TEST - 1 ? 'flex' : 'none';
+    elements.nextBtn.disabled = state.answers[state.currentQuestion] === undefined;
 }
 
-// Обновить кнопки навигации
-function updateNavigationButtons() {
-    elements.prevQuestionBtn.style.display = appState.currentQuestion > 0 ? 'flex' : 'none';
+// Выбрать ответ
+function selectAnswer(index) {
+    state.answers[state.currentQuestion] = index;
     
-    const isLastQuestion = appState.currentQuestion === CONFIG.QUESTIONS_PER_TEST - 1;
-    const isAnswered = appState.userAnswers[appState.currentQuestion] !== null;
+    // Обновить отображение
+    const options = elements.options.querySelectorAll('.option');
+    options.forEach((opt, i) => {
+        opt.classList.toggle('selected', i === index);
+    });
     
-    if (isLastQuestion) {
-        elements.nextQuestionBtn.style.display = 'none';
-        elements.submitTestBtn.style.display = isAnswered ? 'flex' : 'none';
-    } else {
-        elements.nextQuestionBtn.style.display = 'flex';
-        elements.submitTestBtn.style.display = 'none';
-        elements.nextQuestionBtn.disabled = !isAnswered;
+    // Активировать кнопку "Далее"
+    elements.nextBtn.disabled = false;
+}
+
+// Предыдущий вопрос
+function prevQuestion() {
+    if (state.currentQuestion > 0) {
+        state.currentQuestion--;
+        showQuestion();
     }
 }
 
-// Показать предыдущий вопрос
-function showPreviousQuestion() {
-    if (appState.currentQuestion > 0) {
-        appState.currentQuestion--;
-        displayCurrentQuestion();
+// Следующий вопрос
+function nextQuestion() {
+    if (state.currentQuestion < CONFIG.QUESTIONS_PER_TEST - 1 && state.answers[state.currentQuestion] !== undefined) {
+        state.currentQuestion++;
+        showQuestion();
     }
 }
 
-// Показать следующий вопрос
-function showNextQuestion() {
-    const isAnswered = appState.userAnswers[appState.currentQuestion] !== null;
-    
-    if (isAnswered && appState.currentQuestion < CONFIG.QUESTIONS_PER_TEST - 1) {
-        appState.currentQuestion++;
-        displayCurrentQuestion();
+// Обработка клавиш
+function handleKeyPress(e) {
+    if (elements.screens.test.classList.contains('active')) {
+        if (e.key === 'ArrowLeft' && state.currentQuestion > 0) {
+            prevQuestion();
+        } else if (e.key === 'ArrowRight' && state.currentQuestion < CONFIG.QUESTIONS_PER_TEST - 1) {
+            nextQuestion();
+        } else if (e.key >= '1' && e.key <= '4') {
+            selectAnswer(parseInt(e.key) - 1);
+        }
     }
 }
 
 // Завершить тест
 function submitTest() {
-    clearInterval(appState.timerInterval);
+    clearInterval(state.timer);
+    
+    // Проверить все ли вопросы отвечены
+    const unanswered = state.answers.filter(a => a === undefined).length;
+    if (unanswered > 0 && !confirm(`Вы ответили не на все вопросы (${unanswered} без ответа). Завершить тест?`)) {
+        startTimer();
+        return;
+    }
+    
+    // Рассчитать результаты
     const results = calculateResults();
+    
+    // Показать результаты
     showResults(results);
-    sendResultsToTelegram(results);
+    
+    // Отправить в Telegram
+    sendToTelegram(results);
 }
 
 // Рассчитать результаты
 function calculateResults() {
-    let correctCount = 0;
-    
-    for (let i = 0; i < CONFIG.QUESTIONS_PER_TEST; i++) {
-        if (appState.userAnswers[i] === appState.testQuestions[i].correct) {
-            correctCount++;
+    let correct = 0;
+    state.questions.forEach((q, i) => {
+        if (state.answers[i] === q.correct) {
+            correct++;
         }
-    }
+    });
     
-    const percentage = Math.round((correctCount / CONFIG.QUESTIONS_PER_TEST) * 100);
-    const timeSpent = CONFIG.TIME_LIMIT - appState.timeLeft;
-    const now = new Date();
+    const percentage = Math.round((correct / CONFIG.QUESTIONS_PER_TEST) * 100);
+    const timeSpent = CONFIG.TIME_LIMIT - state.timeLeft;
     
     return {
-        correctCount,
+        correct,
+        total: CONFIG.QUESTIONS_PER_TEST,
         percentage,
-        totalQuestions: CONFIG.QUESTIONS_PER_TEST,
         timeSpent,
-        date: now.toLocaleDateString('ru-RU'),
-        time: now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })
+        date: new Date().toLocaleDateString('ru-RU'),
+        time: new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })
     };
 }
 
 // Показать результаты
 function showResults(results) {
-    elements.testSection.style.display = 'none';
-    elements.resultsSection.style.display = 'block';
+    elements.scorePercent.textContent = `${results.percentage}%`;
+    elements.correctCount.textContent = results.correct;
+    elements.resultDate.textContent = `${results.date} ${results.time}`;
     
-    elements.scoreValue.textContent = `${results.percentage}%`;
-    elements.correctAnswers.textContent = results.correctCount;
-    elements.testDate.textContent = `${results.date} ${results.time}`;
-    
+    // Анимировать круг
     setTimeout(() => {
-        const scoreCircle = document.querySelector('.score-circle');
-        scoreCircle.style.background = `conic-gradient(var(--primary) 0% ${results.percentage}%, var(--light-gray) ${results.percentage}% 100%)`;
+        const circle = document.querySelector('.circle');
+        circle.style.background = `conic-gradient(var(--primary) 0% ${results.percentage}%, var(--light-gray) ${results.percentage}% 100%)`;
     }, 100);
     
-    let title, description;
+    // Установить заголовок
+    let title, desc;
     if (results.percentage >= 90) {
         title = 'Отлично! 🏆';
-        description = 'Превосходный результат!';
+        desc = 'Превосходный результат!';
     } else if (results.percentage >= 70) {
         title = 'Хорошо! 👍';
-        description = 'Хорошие знания по физкультуре!';
+        desc = 'Хорошие знания!';
     } else if (results.percentage >= 50) {
-        title = 'Удовлетворительно 😊';
-        description = 'Есть что повторить';
+        title = 'Удовлетворительно';
+        desc = 'Можно лучше!';
     } else {
-        title = 'Попробуйте еще раз 💪';
-        description = 'Рекомендуем изучить материал';
+        title = 'Попробуйте еще раз';
+        desc = 'Повторите материал';
     }
     
     elements.resultTitle.textContent = title;
-    elements.resultDescription.textContent = description;
+    elements.resultDesc.textContent = desc;
+    
+    showScreen('results');
+    elements.telegramStatus.textContent = 'Отправляется...';
+    elements.telegramStatus.className = 'status loading';
 }
 
-// Отправить результаты в Telegram
-async function sendResultsToTelegram(results) {
-    if (!appState.user) return;
-    
-    elements.telegramStatus.textContent = 'Отправка...';
-    elements.telegramStatus.style.color = '#FF9800';
+// Отправить в Telegram
+async function sendToTelegram(results) {
+    if (!state.user) return;
     
     try {
-        const message = `
-📊 *РЕЗУЛЬТАТ ТЕСТИРОВАНИЯ*
-
-👤 *Ученик:* ${appState.user.name}
-🏫 *Класс:* ${appState.user.class}
-📅 *Дата:* ${results.date}
-⏰ *Время:* ${results.time}
+        const message = `📊 *Результат теста по физкультуре*
+        
+👤 *Ученик:* ${state.user.name}
+🏫 *Класс:* ${state.user.class}
+📅 *Дата:* ${results.date} ${results.time}
 
 📈 *Результат:* ${results.percentage}%
-✅ *Правильно:* ${results.correctCount}/${results.totalQuestions}
-⏱️ *Время:* ${Math.floor(results.timeSpent / 60)}:${(results.timeSpent % 60).toString().padStart(2, '0')}
+✅ *Правильно:* ${results.correct}/${results.total}
+⏱️ *Время:* ${Math.floor(results.timeSpent/60)}:${(results.timeSpent%60).toString().padStart(2,'0')}
 
-🎯 *Оценка:* ${getGradeText(results.percentage)}
-📋 *Уровень:* ${getLevelText(results.percentage)}
-        `;
+${results.percentage >= 90 ? '🏆 Отличный результат!' : 
+  results.percentage >= 70 ? '👍 Хорошо!' : 
+  results.percentage >= 50 ? '😊 Удовлетворительно' : '💪 Нужно повторить'}`;
         
-        const url = `https://api.telegram.org/bot${CONFIG.TELEGRAM_BOT_TOKEN}/sendMessage`;
-        
-        const response = await fetch(url, {
+        // Отправка через Telegram Bot API
+        const response = await fetch(`https://api.telegram.org/bot${CONFIG.TELEGRAM_BOT_TOKEN}/sendMessage`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 chat_id: CONFIG.TELEGRAM_CHAT_ID,
                 text: message,
@@ -1041,79 +623,54 @@ async function sendResultsToTelegram(results) {
         const data = await response.json();
         
         if (data.ok) {
-            elements.telegramStatus.textContent = '✓ Отправлено учителю';
-            elements.telegramStatus.style.color = '#4CAF50';
+            elements.telegramStatus.textContent = '✓ Отправлено';
+            elements.telegramStatus.className = 'status success';
+            
+            // Сохранить результат
+            saveResult(results);
         } else {
-            throw new Error(data.description || 'Ошибка отправки');
+            throw new Error(data.description);
         }
         
-        saveTestHistory(results);
-        
     } catch (error) {
-        console.error('Ошибка отправки:', error);
+        console.error('Telegram ошибка:', error);
         elements.telegramStatus.textContent = '✗ Ошибка отправки';
-        elements.telegramStatus.style.color = '#f44336';
+        elements.telegramStatus.className = 'status error';
         
+        // Кнопка повторной отправки
         const retryBtn = document.createElement('button');
         retryBtn.textContent = 'Повторить отправку';
-        retryBtn.className = 'btn secondary-btn';
+        retryBtn.className = 'btn';
         retryBtn.style.marginTop = '10px';
-        retryBtn.onclick = () => sendResultsToTelegram(results);
+        retryBtn.onclick = () => {
+            retryBtn.remove();
+            sendToTelegram(results);
+        };
         
         elements.telegramStatus.parentElement.appendChild(retryBtn);
     }
 }
 
-// Получить текстовую оценку
-function getGradeText(percentage) {
-    if (percentage >= 90) return '5 (Отлично)';
-    if (percentage >= 70) return '4 (Хорошо)';
-    if (percentage >= 50) return '3 (Удовлетворительно)';
-    return '2 (Неудовлетворительно)';
-}
-
-// Получить уровень знаний
-function getLevelText(percentage) {
-    if (percentage >= 90) return 'Высокий';
-    if (percentage >= 70) return 'Средний';
-    if (percentage >= 50) return 'Ниже среднего';
-    return 'Низкий';
-}
-
-// Сохранить историю тестов
-function saveTestHistory(results) {
-    const history = JSON.parse(localStorage.getItem('fizraTestHistory') || '[]');
-    
+// Сохранить результат
+function saveResult(results) {
+    const history = JSON.parse(localStorage.getItem('fizraResults') || '[]');
     history.push({
-        userId: appState.user.id,
-        userName: appState.user.name,
-        userClass: appState.user.class,
-        date: new Date().toISOString(),
-        results: results
+        user: state.user,
+        results: results,
+        timestamp: new Date().toISOString()
     });
-    
-    if (history.length > 100) {
-        history.shift();
-    }
-    
-    localStorage.setItem('fizraTestHistory', JSON.stringify(history));
+    localStorage.setItem('fizraResults', JSON.stringify(history.slice(-50)));
 }
 
-// Начать тест заново
+// Начать заново
 function restartTest() {
     startTest();
 }
 
-// Вернуться на главную
-function goToHome() {
-    elements.welcomeSection.style.display = 'block';
-    elements.testSection.style.display = 'none';
-    elements.resultsSection.style.display = 'none';
-    
-    if (appState.timerInterval) {
-        clearInterval(appState.timerInterval);
-    }
+// На главную
+function goHome() {
+    showScreen('welcome');
 }
 
-// Инициализация при загрузке страницы
+// Запуск при загрузке
 document.addEventListener('DOMContentLoaded', init);
