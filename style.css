@@ -1,4 +1,4 @@
-/* Мобильный дизайн */
+/* Основные стили */
 :root {
     --primary: #6366f1;
     --primary-light: #818cf8;
@@ -6,6 +6,7 @@
     --accent: #ec4899;
     --success: #10b981;
     --danger: #ef4444;
+    --warning: #f59e0b;
     --dark: #1f2937;
     --light: #f9fafb;
     --gray: #6b7280;
@@ -36,6 +37,7 @@ body {
     justify-content: center;
 }
 
+/* Экранная система */
 .screen {
     display: none;
     width: 100%;
@@ -138,6 +140,61 @@ body {
     font-size: 16px;
 }
 
+/* Telegram статус */
+.telegram-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px;
+    margin-top: 20px;
+    background: rgba(0, 136, 204, 0.1);
+    border: 2px solid #0088cc;
+    border-radius: 12px;
+    color: #0088cc;
+    font-size: 14px;
+    animation: fadeIn 0.5s ease;
+}
+
+.telegram-status i {
+    font-size: 18px;
+}
+
+.telegram-send-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px;
+    margin: 20px 0;
+    background: rgba(0, 136, 204, 0.1);
+    border: 2px solid #0088cc;
+    border-radius: 12px;
+    color: #0088cc;
+    font-size: 15px;
+    animation: pulse 2s infinite;
+}
+
+.telegram-send-status.success {
+    background: rgba(16, 185, 129, 0.1);
+    border-color: #10b981;
+    color: #10b981;
+    animation: none;
+}
+
+.telegram-send-status.error {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: #ef4444;
+    color: #ef4444;
+    animation: none;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
+}
+
 /* Кнопки */
 .btn {
     width: 100%;
@@ -176,6 +233,12 @@ body {
     transform: translateY(-1px);
 }
 
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
 /* Форма входа */
 .input-group {
     margin-bottom: 20px;
@@ -187,6 +250,9 @@ body {
     font-weight: 600;
     margin-bottom: 8px;
     font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .input-group input,
@@ -393,6 +459,51 @@ body {
     font-size: 16px;
 }
 
+/* Уведомления */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    z-index: 10000;
+    animation: slideInRight 0.5s ease;
+    max-width: 400px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    backdrop-filter: blur(10px);
+}
+
+.notification.success {
+    background: rgba(16, 185, 129, 0.95);
+    color: white;
+    border-left: 4px solid #10b981;
+}
+
+.notification.error {
+    background: rgba(239, 68, 68, 0.95);
+    color: white;
+    border-left: 4px solid #ef4444;
+}
+
+.notification.warning {
+    background: rgba(245, 158, 11, 0.95);
+    color: white;
+    border-left: 4px solid #f59e0b;
+}
+
+.notification i {
+    font-size: 18px;
+}
+
+@keyframes slideInRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
 /* Адаптивность */
 @media (max-width: 480px) {
     .app {
@@ -424,16 +535,6 @@ body {
 }
 
 /* Анимации */
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-}
-
-.pulse {
-    animation: pulse 2s infinite;
-}
-
 @keyframes slideIn {
     from {
         opacity: 0;
